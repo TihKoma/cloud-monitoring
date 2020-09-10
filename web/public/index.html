@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Пользовательский web-интерфейс распределенной системы мониторинга облачности</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!--
+	Укажите свой API-ключ. Тестовый ключ НЕ БУДЕТ работать на других сайтах.
+	Получить ключ можно в Кабинете разработчика: https://developer.tech.yandex.ru/keys/
+	-->
+	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=532dd828-0511-4ce1-b1e4-740cdb7f3c27" type="text/javascript"></script>
+	<script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
+	<link href="public/css/bootstrap.min.css" rel="stylesheet">
+	<link href="public/css/style.css" rel="stylesheet">
+	<script src="public/bootstrap.min.js" type="text/javascript"></script>
+
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+	<!-- <script src="js/jquery-3.5.0.min.js" type="text/javascript"></script> -->
+	<script src="public/js/client.js" type="text/javascript"></script>
+	<style>
+		html, body, #map {
+			width: 100%; height: 100%; padding: 0; margin: 0;
+		}
+
+		#my-listbox {
+			top: auto;
+			left: auto;
+		}
+	</style>
+</head>
+
+<body>
+
+
+	<div id="map"></div>
+
+
+
+	<!-- Modal -->
+	<div class="modal fade in" id="myModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Добавление камеры</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="">Координаты</label>
+							<input type="text" class="form-control" id="latitude" aria-describedby="emailHelp" placeholder="Широта" value="55.709243">
+							<input type="text" class="form-control" id="longitude" style = "margin-top: 10px;" placeholder="Долгота" value="37.300737">
+							<small id="emailHelp" class="form-text text-muted">Формат: десятичные градусы</small>
+						</div>
+						<div class="form-group">
+							<label for="azimuth">Направление (азимут)</label>
+							<input type="text" class="form-control" id="azimuth" placeholder="Угол (градусы)" value="90">
+						</div>
+						<div class="form-group">
+							<label for="radius">Параметры камеры</label>
+							<input type="text" class="form-control" id="radius" placeholder="Радиус охвата (м)" value="10000">
+						</div>
+						<div class="form-group">
+							<!-- <label for="viewAngle"></label> -->
+							<input type="text" class="form-control" id="viewAngle" placeholder="Угол обзора (градусы)" value="90">
+						</div>
+
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btn_add" onclick="" class="btn btn-primary">Добавить</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Кнопка запуска модального окна -->
+	<!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalStat">
+	  Launch demo modal
+	</button> -->
+
+	<!-- Модальное окно -->
+	<div class="modal fade" id="modalStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 align="center" class="modal-title" id="myModalLabel">Статистика данных</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<!-- Навигация вкладки -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#wind" role="tab">Направление ветра</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#cloud" role="tab">Облачность</a>
+						</li>
+					</ul>
+
+					<!-- Вкладка панели -->
+					<div class="tab-content">
+						<div class="tab-pane active" id="wind" role="tabpanel">
+							<div id="WindMqttData" style="width: 400px;"></div>
+						</div>
+
+						<div class="tab-pane" id="cloud" role="tabpanel">
+							<div id="CloudMqttData" style="width: 400px;"></div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+					<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

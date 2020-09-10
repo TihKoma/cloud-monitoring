@@ -1,0 +1,25 @@
+.camStat {
+	text-decoration: underline;
+	color: black;
+	cursor: pointer;
+}
+
+.camStat:hover {
+	text-decoration: none;
+}
+
+/*#modalStat .modal-body {
+	width: 800px;
+}*/
+
+/*#modalStat.modal-dialog {
+	width: 800px !important;
+}*/
+
+#myModalLabel {
+	width: 100%;
+}
+
+.modal-lg {
+	max-width: 1200px;
+}

@@ -1,0 +1,97 @@
+version: "3.7"
+
+networks:
+  app:
+    external:
+      name: bridge_app
+  # myapp:
+  #   driver: bridge
+    # external: true
+
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    ports: 
+      - 1883:1883
+    restart: always
+    container_name: mqtt
+    networks:
+      app:
+        aliases:
+          - mqtt
+
+
+  mongoDB:
+    image: mongo
+    ports:
+      - 27017:27017
+    restart: always
+    container_name: mongoDB
+    networks:
+      app:
+        aliases:
+          - mongoDB
+    volumes:
+      - /home/site/db:/data/db
+
+
+  publisher:
+    build: publisher/
+    command: node pub.js
+    ports:
+      - 8080:8080
+    depends_on:
+      - mqtt
+    links:
+      - mqtt
+    restart: always
+    container_name: publisher
+    networks:
+      app:
+        aliases:
+          - publisher
+    # environment:
+    #   MQTT_HOST: mqtt
+
+
+  subscriber:
+    build: subscriber/
+    command: node sub.js
+    ports:
+      - 3498:3498
+    depends_on:
+      - publisher
+      - mqtt
+      - mongoDB
+    links:
+      - publisher
+      - mqtt
+      - mongoDB
+    restart: always
+    container_name: subscriber
+    # network_mode: host
+    networks:
+      app:
+        aliases:
+          - mysub
+
+  web:
+    build: web/
+    command: node server.js
+    ports:
+      - 1337:1337
+    depends_on:
+      - mongoDB
+      - subscriber
+    links:
+      - mongoDB
+      - subscriber
+    restart: always
+    container_name: web
+    # network_mode: host
+    networks:
+      app:
+        aliases:
+          - myweb
+
+
